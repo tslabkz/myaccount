@@ -86,10 +86,10 @@
 
             <ul class="nav navbar-top-links navbar-right">
                 <li>
-                    <span class="m-r-sm text-muted welcome-message">Welcome to MyAccount project.</span>
+                    <span class="m-r-sm text-muted welcome-message">Добро пожаловать в проект MyAccount.</span>
                 </li>
                 <li>
-                    <a href="index.html">
+                    <a href="index.html" id="logout-link-el">
                         <i class="fa fa-sign-out"></i> Log out
                     </a>
                 </li>
@@ -99,7 +99,7 @@
         </div>
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-sm-12">
-                    <h2>MyAccount project</h2>
+                    <h2>Проект MyAccount</h2>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <a href="auth/index.html">Страница</a>
@@ -121,6 +121,8 @@
                                 <div class="ibox-title">
                                     <h5>Профиль <small class="m-l-sm">Персональные данные</small></h5>
                                     <div class="ibox-tools">
+                                        <span id="status-label-el"></span>
+
                                         <a class="collapse-link">
                                             <i class="fa fa-chevron-up"></i>
                                         </a> 
@@ -128,7 +130,7 @@
                                 </div>
                                 <div class="ibox-content">
                                     
-                                    <table class="table">
+                                    <table class="table" id="profile-data-table">
                                         <thead>
                                         <tr>
                                             <th>Поле</th>
@@ -244,7 +246,79 @@
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
+    <script src="js/project.js"></script>
+    <script type="text/javascript">
 
+    $(document).ready(function(){
+        if (!project.auth.isLogged()) {
+            window.location = 'index.html';
+        }
+        $("#logout-link-el").click(function(event){
+            event.preventDefault();
+            project.auth.logOut();
+            window.location = 'index.html';
+        });
+        //--------------------------------------------
+        // заполняем профильные данные
+        // profile-data-table
+        $("#profile-data-table tbody").html("");
+        let appendTrHtml = "";
+        let authData = project.auth.getData();
+        let profileData = authData.profile;
+        let nameTemplate = '<tr>' +
+                        '<td>Имя</td>' + 
+                        '<td>%name%</td>' + 
+                        '<td></td>' + 
+                        '</tr>';
+        let nameHtml = nameTemplate.replace('%name%', profileData.name);
+        $("#profile-data-table tbody").append(nameHtml);
+        
+        let surnameHtml = '<tr>' +
+                        '<td>Фамилия</td>' + 
+                        '<td>%surname%</td>' + 
+                        '<td></td>' + 
+                        '</tr>';
+        appendTrHtml = surnameHtml.replace('%surname%', profileData.surname);
+        $("#profile-data-table tbody").append(appendTrHtml);
+
+        let lastnameHtml = '<tr>' +
+                        '<td>Отчество</td>' + 
+                        '<td>%lastname%</td>' + 
+                        '<td></td>' + 
+                        '</tr>';
+        appendTrHtml = lastnameHtml.replace('%lastname%', profileData.lastname);
+        $("#profile-data-table tbody").append(appendTrHtml);
+
+        let birthdateHtml = '<tr>' +
+                        '<td>День рождения</td>' + 
+                        '<td>%birthdate%</td>' + 
+                        '<td></td>' + 
+                        '</tr>';
+        let bDate = new Date(profileData.birthdate);
+        // let bDataStr = 
+        appendTrHtml = birthdateHtml.replace('%birthdate%', bDate.getDate() + '-' + bDate.getUTCMonth() + '-' + bDate.getFullYear());
+        $("#profile-data-table tbody").append(appendTrHtml);
+        
+        let genderHtml = '<tr>' +
+                        '<td>Пол</td>' + 
+                        '<td>%gender%</td>' + 
+                        '<td></td>' + 
+                        '</tr>';
+        appendTrHtml = genderHtml.replace('%gender%', profileData.gender);
+        $("#profile-data-table tbody").append(appendTrHtml);
+        let profileStatusHtml = '<span class="label label-warning-light">Пустой</span>';
+        if (profileData.status == 'filled') {
+            profileStatusHtml = '<span class="label label-info">Заполенен</span>';
+        }
+        if (profileData.status == 'confirmed') {
+            profileStatusHtml = '<span class="label label-primary">Подтвержден</span>';
+        }
+        
+        $("#status-label-el").html(profileStatusHtml);
+        //--------------------------------------------
+    });
+
+    </script>
 
 </body>
 
