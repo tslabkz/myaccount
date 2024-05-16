@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INSPINIA | Register</title>
+
+    <base href="../"/>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">MY+</h1>
+            </div>
+            <h3>Регистрация MyAccount</h3>
+            <p>Регистрация в системе с помщью эл.почты.</p>
+            <p>Шаг 2: указание кода</p>
+            <form class="m-t" role="form" action="login.html">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Эл.почта" required="" name="email" >
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Код" required="" name="code" >
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b" id="submit-form-btn">Отправит код</button>
+
+                <p class="text-muted text-center"><small>Уже есть аккаунт?</small></p>
+                <a class="btn btn-sm btn-white btn-block" href="index.html">Войти</a>
+            </form>
+
+
+            <br />
+            <p>
+                <a href="pages/register_email_1.html">Перейти к запросу кода</a>
+            </p>
+            <br />
+            <div class="alert alert-info" id="alert-process-is-on" style="display: none;">
+                Проверяем введенные данные.
+            </div>
+
+            <div class="alert alert-danger" id="alert-process-failed" style="display: none;">
+                Произошла ошибка! <span></span>
+            </div>
+
+            <div class="alert alert-success" id="alert-process-successed" style="display: none;">
+                Операция прошла успешно! <span></span>
+            </div>
+
+
+            <p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/project.js"></script>
+    <!-- iCheck -->
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+    <script> 
+    $(document).ready(function(){
+
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+
+        $("#submit-form-btn").click(function(e){
+            e.preventDefault();
+            $("#submit-form-btn").attr("disabled", '1');
+            $("#alert-process-is-on").show();
+            
+            var data = {};
+            data['email'] = $("input[name=email]").val();
+            data['code'] = $("input[name=code]").val();
+
+            let url = project.buildUrl('user.registerEmail_Step_2', data);
+
+            $.get(url, function(response) {
+                if (response.success) {
+                    // success 
+                    showSuccessAlert(response.message);
+                } else {
+                    // error
+                    let message = "";
+                    // message = message + "<br /><strong>" + response.message + '</strong>';
+                    if (response.errors.length > 0) {
+                        // message = message + "<ul>";
+                        response.errors.forEach(function(errorMessage){
+                            message = message + "<br><strong>" + errorMessage + "</strong>";
+                        });
+                        // message = message + "</ul>";
+                    }
+                    showErrorAlert(message);
+                }
+            })
+            .fail(function(response) {
+                showErrorAlert('');
+            })
+            .always(function() {
+                $("#alert-process-is-on").hide();
+                $("#submit-form-btn").removeAttr("disabled");
+            }); 
+        });
+
+        function showErrorAlert(message) {
+            $("#alert-process-failed").find('span').html(message);
+            $("#alert-process-failed").show();
+            setTimeout(function(){
+                $("#alert-process-failed").hide();
+                $("#alert-process-failed").find('span').html('');
+            }, 5000);
+        }
+        
+        function showSuccessAlert(message) {
+            $("#alert-process-successed").find('span').html(message);
+            $("#alert-process-successed").show();
+            setTimeout(function() {
+                $("#alert-process-successed").find('span').html('');
+                $("#alert-process-successed").hide();
+            }, 5000);
+        }
+    });
+    </script>
+</body>
+
+</html>

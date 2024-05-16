@@ -88,9 +88,8 @@
             $.get(url, function(response) {
                 if (response.success) {
                     // success
-                    console.log(response.data);
-                    window.location = 'auth/index.html';
                     project.auth.setData(response.data);
+                    window.location = 'auth/index.html';
                     // showSuccessAlert();
                 } else {
                     // error

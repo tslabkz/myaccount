@@ -130,7 +130,7 @@
                                 </div>
                                 <div class="ibox-content">
                                     
-                                    <table class="table" id="profile-data-table">
+                                    <table class="table" id="profile-data-table" >
                                         <thead>
                                         <tr>
                                             <th>Поле</th>
@@ -173,6 +173,7 @@
                                 <div class="ibox-title">
                                     <h5>Аккаунт <small class="m-l-sm">Идентификационные данные</small></h5>
                                     <div class="ibox-tools">
+                                        <span id="account-status-label-el"></span>
                                         <a class="collapse-link">
                                             <i class="fa fa-chevron-up"></i>
                                         </a> 
@@ -180,7 +181,7 @@
                                 </div>
                                 <div class="ibox-content">
                                     
-                                    <table class="table">
+                                    <table class="table"  id="account-data-table">
                                         <thead>
                                         <tr>
                                             <th>Поле</th>
@@ -265,6 +266,7 @@
         let appendTrHtml = "";
         let authData = project.auth.getData();
         let profileData = authData.profile;
+        
         let nameTemplate = '<tr>' +
                         '<td>Имя</td>' + 
                         '<td>%name%</td>' + 
@@ -294,9 +296,16 @@
                         '<td>%birthdate%</td>' + 
                         '<td></td>' + 
                         '</tr>';
-        let bDate = new Date(profileData.birthdate);
-        // let bDataStr = 
-        appendTrHtml = birthdateHtml.replace('%birthdate%', bDate.getDate() + '-' + bDate.getUTCMonth() + '-' + bDate.getFullYear());
+        let bDataStr = '';
+        if (profileData.birthdate.length > 0)  {
+            if (profileData.birthdate.length > 10) {
+                let bDate = new Date(profileData.birthdate);
+                bDataStr = bDate.getDate() + '-' + bDate.getUTCMonth() + '-' + bDate.getFullYear();
+            } else {
+                bDataStr = profileData.birthdate;
+            }
+        }
+        appendTrHtml = birthdateHtml.replace('%birthdate%', bDataStr);
         $("#profile-data-table tbody").append(appendTrHtml);
         
         let genderHtml = '<tr>' +
@@ -312,10 +321,79 @@
         }
         if (profileData.status == 'confirmed') {
             profileStatusHtml = '<span class="label label-primary">Подтвержден</span>';
-        }
-        
+        } 
         $("#status-label-el").html(profileStatusHtml);
         //--------------------------------------------
+        $("#account-data-table tbody").html("");
+        appendTrHtml = "";
+        htmlTemplate = "";
+        editedHtml = "";
+        let account = profileData = authData.account;
+        //-------
+        // account-status-label-el
+        let accountStatusHtml = '<span class="label label-warning-light">inactive</span>';
+        if (profileData.status == 'active') {
+            accountStatusHtml = '<span class="label label-primary">Активен</span>';
+        } 
+        $("#account-status-label-el").html(accountStatusHtml);
+        //-------
+        htmlTemplate = '<tr>' +
+                        '<td>ИНН</td>' + 
+                        '<td>%iin%</td>' + 
+                        '<td>%status%</td>' + 
+                        '</tr>';
+        editedHtml = htmlTemplate.replace('%iin%', account.iin);
+        let iinStatusStr = "";
+        if (account.iin_status) {    
+            iinStatusStr = "Статус одобрения: " + account.iin_status;
+        }
+        editedHtml = editedHtml.replace('%status%', iinStatusStr);
+        $("#account-data-table tbody").append(editedHtml);
+        //---
+        htmlTemplate = '<tr>' +
+                        '<td>Телефон</td>' + 
+                        '<td>%phone%</td>' + 
+                        '<td>%status%</td>' + 
+                        '</tr>';
+        editedHtml = htmlTemplate.replace('%phone%', account.phone);
+        let phoneAproved = "";
+        if (account.phone.length > 0) {
+            phoneAproved = "<span class='text-danger'>Не подтвержден</span>";
+            if (account.phone_status == 1) {
+                phoneAproved = "<span class='text-success'>Подтвержден</span>";
+            }
+        }
+        editedHtml = editedHtml.replace('%status%', phoneAproved);
+        $("#account-data-table tbody").append(editedHtml);
+        // -----
+        htmlTemplate = '<tr>' +
+                        '<td>Email</td>' + 
+                        '<td>%email%</td>' + 
+                        '<td>%status%</td>' + 
+                        '</tr>';
+        let emailText = (account.email) ? account.email : '<span class="text-muted" >не указан</span>' ;
+        editedHtml = htmlTemplate.replace('%email%', emailText);
+        let emailAproved = "";
+        if (account.email.length > 0) {
+            emailAproved = "<span class='text-danger'>Не подтвержден</span>";
+            if (account.email_status == 1) {
+                emailAproved = "<span class='text-success'>Подтвержден</span>";
+            }
+        }
+        editedHtml = editedHtml.replace('%status%', emailAproved);
+        $("#account-data-table tbody").append(editedHtml);
+        // -----
+        htmlTemplate = '<tr>' +
+                        '<td>Login</td>' + 
+                        '<td>%login%</td>' + 
+                        '<td></td>' + 
+                        '</tr>';
+        let loginText = (account.login) ? account.login : '<span class="text-muted" >не указан</span>' ;
+        editedHtml = htmlTemplate.replace('%login%', loginText); 
+        $("#account-data-table tbody").append(editedHtml);
+        /*
+        // 980611407147
+        */
     });
 
     </script>
