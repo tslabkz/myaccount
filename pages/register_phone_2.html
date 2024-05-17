@@ -24,8 +24,7 @@
     <div class="middle-box text-center loginscreen   animated fadeInDown">
         <div>
             <div>
-
-                <h1 class="logo-name">MY+</h1>
+                <!-- <h1 class="logo-name">MY+</h1> -->
             </div>
             <h3>Регистрация MyAccount</h3>
             <p>Регистрация в системе с помщью номера телефона.</p>
@@ -80,6 +79,14 @@
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green',
         });
+
+        //-------
+        let registerPhone = project.read('register_phone');
+        if (registerPhone) {
+            $("input[name=phone]").val(registerPhone);
+        }
+        // console.log( project.readOnce('phone'));
+        //-------
 
         $("#submit-form-btn").click(function(e){
             e.preventDefault();

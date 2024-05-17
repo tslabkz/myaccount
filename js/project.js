@@ -11,16 +11,31 @@ var projectClass = function() {
         const url = new URL(api_url);
         url.searchParams.set('action', action);
         url.searchParams.set('service_id', default_service_id);
-        Object.keys(data).forEach(function(key){    
+        Object.keys(data).forEach(function(key){
             url.searchParams.set(key, data[key]);
         });
         return url.toString();
+    }
+
+    function setData(key, data) {
+        tempStorage.setData('project_tmp_' + key, data);
+    }
+
+    function remove(key) {
+        tempStorage.remove('project_tmp_' + key);
+    }
+
+    function read(key) {
+        return tempStorage.getData('project_tmp_' + key);
     }
 
     return {
         api_url,
         default_service_id,
         buildUrl,
+        setData,
+        remove,
+        read,
         auth
     }
 }
@@ -103,6 +118,16 @@ var tempDataStorage = function() {
         }
     }
 
+    function remove(key) {
+        window.localStorage.removeItem(key + '_expire');
+        window.localStorage.removeItem(key);
+        let i = keys.indexOf(key);
+        if (i > -1) {
+            keys.splice(i, 1);
+            window.localStorage.setItem(tempStorageKey, JSON.stringify(keys));
+        };
+    }
+
     /**
      * возвращает данные
      * @param {*} key 
@@ -138,6 +163,7 @@ var tempDataStorage = function() {
         setData,
         getData,
         isActual,
+        remove,
     }
 }
 
