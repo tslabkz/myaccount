@@ -80,12 +80,19 @@
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green',
         });
+        //-------
+        let registerEmail = project.read('register_email');
+        // project.remove('register_email');
+        if (registerEmail) {
+            $("input[name=email]").val(registerEmail);
+        }
+        //-------
 
         $("#submit-form-btn").click(function(e){
             e.preventDefault();
             $("#submit-form-btn").attr("disabled", '1');
             $("#alert-process-is-on").show();
-            
+            // register_email
             var data = {};
             data['email'] = $("input[name=email]").val();
             data['code'] = $("input[name=code]").val();
@@ -96,6 +103,9 @@
                 if (response.success) {
                     // success 
                     showSuccessAlert(response.message);
+                    project.setData('register_email', response.data.email);
+                    project.setData('register_email_token', response.data.token);
+                    window.location.href = 'pages/register_email_3.html';
                 } else {
                     // error
                     let message = "";

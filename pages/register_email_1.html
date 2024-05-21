@@ -34,9 +34,6 @@
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder=" Эл.почта" required="" name="email" >
                 </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Пароль" required="" name="password" >
-                </div>
                 <button type="submit" class="btn btn-primary block full-width m-b" id="submit-form-btn">Отправит на код</button>
 
                 <p class="text-muted text-center"><small>Уже есть аккаунт?</small></p>
@@ -88,7 +85,6 @@
             
             var data = {};
             data['email'] = $("input[name=email]").val();
-            data['password'] = $("input[name=password]").val();
 
             let url = project.buildUrl('user.registerEmail_Step_1', data);
 
@@ -96,6 +92,9 @@
                 if (response.success) {
                     // success 
                     showSuccessAlert(response.message);
+                    project.setData('register_email', data.email);
+                    showSuccessAlert(response.message);
+                    window.location.href='pages/register_email_2.html';
                 } else {
                     // error
                     let message = "";

@@ -28,13 +28,19 @@
             </div>
             <h3>Регистрация MyAccount</h3>
             <p>Регистрация в системе с помщью номера телефона.</p>
-            <p>Шаг 2: указание смс-кода</p>
+            <p>Шаг 3: указание пароля</p>
             <form class="m-t" role="form" action="login.html">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Телефон" required="" name="phone" >
                 </div>
+
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Код" required="" name="code" >
+                    <input type="text" class="form-control" placeholder="Пароль" required="" name="password" >
+                </div>
+
+                <div class="form-group">
+                    <input type="text" disabled class="form-control" placeholder="Токен" required="" name="token" >
+                    <small>для разработчика, пользователь вводить ничего на надо</small>
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b" id="submit-form-btn">Отправит код</button>
 
@@ -86,8 +92,12 @@
         if (registerPhone) {
             $("input[name=phone]").val(registerPhone);
         }
+        let registerToken = project.read('register_phone_token');
+        project.remove('register_phone_token');
+        if (registerToken) {
+            $("input[name=token]").val(registerToken);
+        }
         //-------
-
         $("#submit-form-btn").click(function(e){
             e.preventDefault();
             $("#submit-form-btn").attr("disabled", '1');
@@ -95,17 +105,15 @@
             
             var data = {};
             data['phone'] = $("input[name=phone]").val();
-            data['code'] = $("input[name=code]").val();
+            data['password'] = $("input[name=password]").val();
+            data['token'] = $("input[name=token]").val();
 
-            let url = project.buildUrl('user.registerPhone_Step_2', data);
+            let url = project.buildUrl('user.registerPhone_Step_3', data);
 
             $.get(url, function(response) {
                 if (response.success) {
                     // success 
                     showSuccessAlert(response.message);
-                    project.setData('register_phone', response.data.phone);
-                    project.setData('register_phone_token', response.data.token);
-                    window.location.href = 'pages/register_phone_3.html';
                 } else {
                     // error
                     let message = "";
