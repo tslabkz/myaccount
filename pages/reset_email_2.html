@@ -25,7 +25,7 @@
         <div>
             <div>
 
-                <h1 class="logo-name">MY+</h1>
+                <!-- <h1 class="logo-name">MY+</h1> -->
             </div>
             <h3>Регистрация MyAccount</h3>
             <p>Регистрация в системе с помщью эл.почты.</p>
@@ -37,16 +37,27 @@
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Код" required="" name="code" >
                 </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Пароль" required="" name="password" >
+                </div>
                 <button type="submit" class="btn btn-primary block full-width m-b" id="submit-form-btn">Отправит код</button>
 
                 <p class="text-muted text-center"><small>Уже есть аккаунт?</small></p>
                 <a class="btn btn-sm btn-white btn-block" href="index.html">Войти</a>
             </form>
 
-
             <br />
+
+            <div id="some-info-messsage" style="display:none;">
+                <div class="alert alert-info">
+                    На указанную эл почту должно прийти код. введите его в поле и затем введите новый пароль.
+                </div>
+                <small>На самом деле ничего ни куда не приходит. Это имитация функционала. Код смотрите в базе.</small>
+            </div>
+
+
             <p>
-                <a href="pages/register_email_1.html">Перейти к запросу кода</a>
+                <a href="pages/reset_email_1.html">Перейти к запросу кода</a>
             </p>
             <br />
             <div class="alert alert-info" id="alert-process-is-on" style="display: none;">
@@ -81,10 +92,15 @@
             radioClass: 'iradio_square-green',
         });
         //-------
-        let registerEmail = project.read('register_email');
-        // project.remove('register_email');
+        $("input[name=code]").focus();
+        let registerEmail = project.read('reset_email');
+        project.remove('reset_email');
         if (registerEmail) {
             $("input[name=email]").val(registerEmail);
+        } 
+        if (project.read('reset_email_sent') == 1) {
+            project.remove('reset_email_sent')
+            $("#some-info-messsage").show();
         }
         //-------
 
@@ -96,6 +112,7 @@
             var data = {};
             data['email'] = $("input[name=email]").val();
             data['code'] = $("input[name=code]").val();
+            data['password'] = $("input[name=password]").val();
 
             let url = project.buildUrl('user.resetPasswordEmail_Step_2', data);
 
@@ -103,9 +120,6 @@
                 if (response.success) {
                     // success 
                     showSuccessAlert(response.message);
-                    project.setData('register_email', response.data.email);
-                    project.setData('register_email_token', response.data.token);
-                    window.location.href = 'pages/register_email_3.html';
                 } else {
                     // error
                     let message = "";

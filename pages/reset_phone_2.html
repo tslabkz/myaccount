@@ -24,18 +24,20 @@
     <div class="middle-box text-center loginscreen   animated fadeInDown">
         <div>
             <div>
-
-                <h1 class="logo-name">MY+</h1>
+                <!-- <h1 class="logo-name">MY+</h1> -->
             </div>
-            <h3>Регистрация MyAccount</h3>
-            <p>Регистрация в системе с помщью эл.почты.</p>
-            <p>Шаг 2: указание кода</p>
+            <h3>Сброс пароля MyAccount</h3>
+            <p>Сброс пароля с помщью номера телефона.</p>
+            <p>Шаг 2: указание смс-кода и пароля</p>
             <form class="m-t" role="form" action="login.html">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Эл.почта" required="" name="email" >
+                    <input type="text" class="form-control" placeholder="Телефон" required="" name="phone" >
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Код" required="" name="code" >
+                    <input type="text" class="form-control" placeholder="Смс-код" required="" name="code" focus >
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Новый пароль" required="" name="password" >
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b" id="submit-form-btn">Отправит код</button>
 
@@ -43,10 +45,17 @@
                 <a class="btn btn-sm btn-white btn-block" href="index.html">Войти</a>
             </form>
 
-
             <br />
+
+            <div id="some-info-messsage" style="display:none;">
+                <div class="alert alert-info">
+                    На указанный номер телефона должно прийти смс-код. введите его в поле и затем введите новый пароль.
+                </div>
+                <small>На самом деле ничего ни куда не приходит. Это имитация функционала. Код смотрите в базе.</small>
+            </div>
+
             <p>
-                <a href="pages/register_email_1.html">Перейти к запросу кода</a>
+                <a href="pages/reset_phone_1.html">Перейти к запросу смс кода</a>
             </p>
             <br />
             <div class="alert alert-info" id="alert-process-is-on" style="display: none;">
@@ -80,32 +89,39 @@
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green',
         });
+
         //-------
-        let registerEmail = project.read('register_email');
-        // project.remove('register_email');
-        if (registerEmail) {
-            $("input[name=email]").val(registerEmail);
+        let resetPhone = project.read('reset_phone');
+        project.remove('reset_phone');
+        if (resetPhone) {
+            $("input[name=phone]").val(resetPhone);
         }
+        if (project.read('reset_phone_sent') == 1) {
+            project.remove('reset_phone_sent')
+            $("#some-info-messsage").show();
+        }
+        $("input[name=code]").focus();
         //-------
 
         $("#submit-form-btn").click(function(e){
             e.preventDefault();
             $("#submit-form-btn").attr("disabled", '1');
             $("#alert-process-is-on").show();
-            // register_email
+            
             var data = {};
-            data['email'] = $("input[name=email]").val();
+            data['phone'] = $("input[name=phone]").val();
             data['code'] = $("input[name=code]").val();
+            data['password'] = $("input[name=password]").val();
 
-            let url = project.buildUrl('user.resetPasswordEmail_Step_2', data);
+            let url = project.buildUrl('user.resetPasswordPhone_Step_2', data);
 
             $.get(url, function(response) {
                 if (response.success) {
                     // success 
                     showSuccessAlert(response.message);
-                    project.setData('register_email', response.data.email);
-                    project.setData('register_email_token', response.data.token);
-                    window.location.href = 'pages/register_email_3.html';
+                    // project.setData('register_phone', response.data.phone);
+                    // project.setData('register_phone_token', response.data.token);
+                    // window.location.href = 'pages/register_phone_3.html';
                 } else {
                     // error
                     let message = "";
