@@ -97,7 +97,7 @@
             data['email'] = $("input[name=email]").val();
             data['code'] = $("input[name=code]").val();
 
-            let url = project.buildUrl('user.resetPasswordEmail_Step_2', data);
+            let url = project.buildUrl('user.registerEmail_Step_2', data);
 
             $.get(url, function(response) {
                 if (response.success) {
