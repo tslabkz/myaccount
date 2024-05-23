@@ -13,6 +13,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
 
+    <link href="css/plugins/ladda/ladda-themeless.min.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
@@ -215,6 +216,75 @@
         
                                 </div>
                                 
+
+
+                                <div class="ibox-footer">
+                                    <!-- <span class="float-right">
+                                      The righ side of the footer
+                                    </span> -->
+                                    
+                                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editAuthFormModal">
+                                    Редактировать
+                                </button>
+                                    <!-- modal start -->
+                                    <div class="modal inmodal fade" id="editAuthFormModal" tabindex="-1" role="dialog"  aria-hidden="true">
+                                        <div class="modal-dialog modal-md">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                    <h4 class="modal-title">Форма данных авторизации</h4>
+                                                    <small class="font-bold">Здесь вы можете изменить авторизационные данные, такие как телефон эл почту и тд.</small>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <div class="form-group  row">
+                                                        <label class="col-sm-4 col-form-label">Телефон</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" name="auth-form-phone">
+                                                            <span class="form-text m-b-none">После изменения номера телефона необходимо подтвердить, что бы им пользоваться.</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group  row">
+                                                        <label class="col-sm-4 col-form-label">Эл почта</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" name="auth-form-email" >
+                                                            <span class="form-text m-b-none">После изменения эл почты необходимо подтвердить, что бы им пользоваться.</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group  row">
+                                                        <label class="col-sm-4 col-form-label">Логин</label>
+                                                        <div class="col-sm-8"><input type="text" class="form-control" name="auth-form-login" ></div>
+                                                    </div>
+
+                                                    <div class="form-group  row">
+                                                        <label class="col-sm-4 col-form-label">Пароль</label>
+                                                        <div class="col-sm-8"><input type="text" class="form-control" name="auth-form-new_password" ></div>
+                                                    </div>
+
+                   
+
+                                                </div>
+        
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
+                                                    <!-- <button type="button" class="btn btn-primary">Сохранить</button> -->
+                                                    <button class="ladda-button btn btn-primary" data-style="expand-left" id="auth-data-form-submit">
+                                                        <span class="ladda-label">Сохранить</span><span class="ladda-spinner"></span>
+                                                        <div class="ladda-progress" style="width: 0px;"></div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- modal end -->
+
+
+                                </div>
+
+
+
                             </div>
                             <!-- second column:end -->
                         </div>
@@ -247,10 +317,101 @@
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
+     
+    <!-- Ladda -->
+    <script src="js/plugins/ladda/spin.min.js"></script>
+    <script src="js/plugins/ladda/ladda.min.js"></script>
+    <script src="js/plugins/ladda/ladda.jquery.min.js"></script>
+
     <script src="js/project.js"></script>
     <script type="text/javascript">
 
     $(document).ready(function(){
+
+        // var l = $( '.ladda-button' ).ladda();
+
+        // l.click(function(){
+        //     // Start loading
+        //     l.ladda( 'start' );
+
+        //     // Timeout example
+        //     // Do something in backend and then stop ladda
+        //     setTimeout(function(){
+        //         l.ladda('stop');
+        //     },12000)
+
+
+        // });
+        //--------------------------------------------
+        $("#auth-data-form-submit").click(function(event){
+            event.preventDefault();
+            // service_id(string, обязателен), uuid(string, обязателен), phone(string), email(string), login(string), new_password(string)
+        });
+
+        $("#auth-data-form-submit").click(function(e){
+            var l = Ladda.create(this);
+	 	    l.start();
+
+            e.preventDefault();
+            // $("#submit-form-btn").attr("disabled", '1');
+            // $("#alert-process-is-on").show();
+            // register_email
+            var data = {};
+            let authData = project.auth.getData().account;
+            data['uuid'] = authData.uuid;
+            if ($("input[name=auth-form-email]").val().length > 0) {
+                data['email'] = $("input[name=auth-form-email]").val();
+            }
+
+            if ($("input[name=auth-form-phone]").val().length > 0) {
+                data['phone'] = $("input[name=auth-form-phone]").val();
+            }
+
+            if ($("input[name=auth-form-login]").val().length > 0) {
+                data['login'] = $("input[name=auth-form-login]").val();
+            }
+
+            if ($("input[name=auth-form-new_password]").val().length > 0) { 
+                data['new_password'] = $("input[name=auth-form-new_password]").val();
+            }
+
+            let url = project.buildUrl('user.editAuthForm', data);
+
+            $.get(url, function(response) { 
+                if (response.success) { 
+                    authData = project.auth.getData(); 
+                    Object.keys(response.data).forEach(function(editedProp) { 
+                        authData.account[editedProp] = response.data[editedProp]; 
+                    }); 
+                    project.auth.setData(authData); 
+                    window.location.reload();  
+                } else {
+                    // // error
+                    // let message = "";
+                    // // message = message + "<br /><strong>" + response.message + '</strong>';
+                    // if (response.errors.length > 0) {
+                    //     // message = message + "<ul>";
+                    //     response.errors.forEach(function(errorMessage){
+                    //         message = message + "<br><strong>" + errorMessage + "</strong>";
+                    //     });
+                    //     // message = message + "</ul>";
+                    // }
+                    // showErrorAlert(message);
+                }
+
+            })
+            .fail(function(response) {
+                // showErrorAlert('');
+                console.log("failed");
+            })
+            .always(function() {
+                console.log("always function fired");
+                l.stop(); 
+                // $("#alert-process-is-on").hide();
+                // $("#submit-form-btn").removeAttr("disabled");
+            }); 
+        });
+        //--------------------------------------------
         if (!project.auth.isLogged()) {
             window.location = 'index.html';
         }
