@@ -165,8 +165,101 @@
         
                                 </div>
                                 
+                                <div class="ibox-footer">
+                                    <!-- <span class="float-right">
+                                      The righ side of the footer
+                                    </span> -->
+                                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editPersonalFormModal">
+                                        Редактировать
+                                    </button>
+                                </div>
+
                             </div>
                             <!-- first column:end -->
+<!-- modal start -->
+<div class="modal inmodal fade" id="editPersonalFormModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Форма персональных данных</h4>
+                <small class="font-bold">Здесь вы можете изменить персональные данные.</small>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Имя</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="personal-form-name">
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Фамилия</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="personal-form-surname">
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Отчество</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="personal-form-lastname">
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">День рождения</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="personal-form-birthdate">
+                    </div>
+                </div> 
+                
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Псевдоним</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="personal-form-nickname">
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Резидент</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="personal-form-resident">
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Национальность</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="personal-form-nationality">
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Пол</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="personal-form-gender">
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
+                <!-- <button type="button" class="btn btn-primary">Сохранить</button> -->
+                <button class="ladda-button btn btn-primary" data-style="expand-left" id="personal-data-form-submit">
+                    <span class="ladda-label">Сохранить</span><span class="ladda-spinner"></span>
+                    <div class="ladda-progress" style="width: 0px;"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal end -->
+
+
+
+
                         </div>
                         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
                             <!-- second column:start -->
@@ -226,6 +319,7 @@
                                 <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editAuthFormModal">
                                     Редактировать
                                 </button>
+                            </div>
                                     <!-- modal start -->
                                     <div class="modal inmodal fade" id="editAuthFormModal" tabindex="-1" role="dialog"  aria-hidden="true">
                                         <div class="modal-dialog modal-md">
@@ -262,9 +356,6 @@
                                                         <label class="col-sm-4 col-form-label">Пароль</label>
                                                         <div class="col-sm-8"><input type="text" class="form-control" name="auth-form-new_password" ></div>
                                                     </div>
-
-                   
-
                                                 </div>
         
                                                 <div class="modal-footer">
@@ -279,18 +370,98 @@
                                         </div>
                                     </div>
                                     <!-- modal end -->
+<!-- modal confirm phone:start -->
+<div class="modal inmodal fade" id="confirmPhoneFormModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Подтверждение телефона</h4>
+            </div>
+            <div class="modal-body">
+                
+                
+                <div class="form-group">
+                    <button class="ladda-button  btn btn-outline btn-info form-control" 
+                            id="phone-confirm-send-sms-submit"
+                            data-style="slide-left">
+                        <span class="ladda-label">Запросить код</span>
+                        <span class="ladda-spinner"></span>
+                        <div class="ladda-progress" style="width: 0px;"></div>
+                    </button>
+                </div>
 
+                <div class="form-group">
+                    <input type="text" placeholder="Смс код" class="form-control" name="phone-confirm-code" disabled>
+                </div>
 
-                                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
+                <button class="ladda-button  btn btn-outline btn-primary form-control" 
+                        id="phone-confirm-submit"
+                        data-style="slide-left"
+                        disabled
+                        >
+                    <span class="ladda-label">Подтвердить</span>
+                    <span class="ladda-spinner"></span>
+                    <div class="ladda-progress" style="width: 0px;"></div>
+                </button>
+                <!-- <button type="button" class="btn btn-primary" disabled>Подтвердить</button> -->
 
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal confirm phone:end -->
+<!-- modal confirm email:start -->
+<div class="modal inmodal fade" id="confirmEmailFormModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Подтверждение эл почты</h4>
+            </div>
+            <div class="modal-body">
+                
+                
+                <div class="form-group">
+                    <button class="ladda-button  btn btn-outline btn-info form-control" 
+                            id="email-confirm-send-sms-submit"
+                            data-style="slide-left">
+                        <span class="ladda-label">Запросить код</span>
+                        <span class="ladda-spinner"></span>
+                        <div class="ladda-progress" style="width: 0px;"></div>
+                    </button>
+                </div>
 
+                <div class="form-group">
+                    <input type="text" placeholder="Код" class="form-control" name="email-confirm-code" disabled>
+                </div>
 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
+                <button class="ladda-button  btn btn-outline btn-primary form-control" 
+                        id="email-confirm-submit"
+                        data-style="slide-left"
+                        disabled
+                        >
+                    <span class="ladda-label">Подтвердить</span>
+                    <span class="ladda-spinner"></span>
+                    <div class="ladda-progress" style="width: 0px;"></div>
+                </button>
+                <!-- <button type="button" class="btn btn-primary" disabled>Подтвердить</button> -->
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal confirm email:end -->
                             </div>
                             <!-- second column:end -->
                         </div>
                     </div>
-
-                    
                     <!-- content:end --> 
                 </div>
             </div>
@@ -326,36 +497,151 @@
     <script src="js/project.js"></script>
     <script type="text/javascript">
 
-    $(document).ready(function(){
+    $(document).ready(function() {
 
-        // var l = $( '.ladda-button' ).ladda();
-
-        // l.click(function(){
-        //     // Start loading
-        //     l.ladda( 'start' );
-
-        //     // Timeout example
-        //     // Do something in backend and then stop ladda
-        //     setTimeout(function(){
-        //         l.ladda('stop');
-        //     },12000)
-
-
-        // });
         //--------------------------------------------
-        $("#auth-data-form-submit").click(function(event){
-            event.preventDefault();
-            // service_id(string, обязателен), uuid(string, обязателен), phone(string), email(string), login(string), new_password(string)
+        //--------------------------------------------
+        // запрос кода
+        $("#email-confirm-send-sms-submit").click(function(e){
+            e.preventDefault();
+            var l = Ladda.create(this);
+            l.start();
+            let data = {};
+            data['email'] = project.auth.getData().account.email;
+            let url = project.buildUrl('user.confirmEmail_Step_1', data);
+            $.get(url, function(response) { 
+                if (response.success) { 
+                    $("input[name=email-confirm-code]").removeAttr('disabled');
+                    $("#email-confirm-submit").removeAttr('disabled');
+                    $("input[name=email-confirm-code]").focus(); 
+                } else {
+                    // пока нет обработки ошибок
+                }
+            })
+            .fail(function(response) {
+            })
+            .always(function() {
+                l.stop(); 
+            }); 
         });
-
+        // подтверждение кода
+        $("#email-confirm-submit").click(function(e){
+            e.preventDefault();
+            var l = Ladda.create(this);
+            l.start();
+            let data = {};
+            data['email'] = project.auth.getData().account.email;
+            data['code'] = $("input[name=email-confirm-code]").val();
+            let url = project.buildUrl('user.confirmEmail_Step_2', data);
+            $.get(url, function(response) { 
+                if (response.success) { 
+                    authData = project.auth.getData(); 
+                    Object.keys(response.data).forEach(function(editedProp) { 
+                        authData.account[editedProp] = response.data[editedProp]; 
+                    }); 
+                    project.auth.setData(authData); 
+                    window.location.reload(); 
+                } else {
+                    // пока нет обработки ошибок
+                }
+            })
+            .fail(function(response) {
+            })
+            .always(function() {
+                l.stop(); 
+            }); 
+        });
+        //--------------------------------------------
+        // запрос смс кода
+        $("#phone-confirm-send-sms-submit").click(function(e){
+            e.preventDefault();
+            var l = Ladda.create(this);
+	 	    l.start();
+            let data = {};
+            data['phone'] = project.auth.getData().account.phone;
+            let url = project.buildUrl('user.confirmPhone_Step_1', data);
+            $.get(url, function(response) { 
+                if (response.success) { 
+                    $("input[name=phone-confirm-code]").removeAttr('disabled');
+                    $("#phone-confirm-submit").removeAttr('disabled');
+                    $("input[name=phone-confirm-code]").focus(); 
+                } else {
+                    // пока нет обработки ошибок
+                }
+            })
+            .fail(function(response) {
+            })
+            .always(function() {
+                l.stop(); 
+            }); 
+        });
+        // подтверждение смс кода
+        $("#phone-confirm-submit").click(function(e){
+            e.preventDefault();
+            var l = Ladda.create(this);
+	 	    l.start();
+            let data = {};
+            data['phone'] = project.auth.getData().account.phone;
+            data['code'] = $("input[name=phone-confirm-code]").val();
+            let url = project.buildUrl('user.confirmPhone_Step_2', data);
+            $.get(url, function(response) { 
+                if (response.success) { 
+                    authData = project.auth.getData(); 
+                    Object.keys(response.data).forEach(function(editedProp) { 
+                        authData.account[editedProp] = response.data[editedProp]; 
+                    }); 
+                    project.auth.setData(authData); 
+                    window.location.reload(); 
+                } else {
+                    // пока нет обработки ошибок
+                }
+            })
+            .fail(function(response) {
+            })
+            .always(function() {
+                l.stop(); 
+            }); 
+        });
+        //--------------------------------------------
+        $("#personal-data-form-submit").click(function(e){
+            var l = Ladda.create(this);
+	 	    l.start();
+            e.preventDefault();
+            var data = {};
+            let authData = project.auth.getData().account;
+            data['uuid'] = authData.uuid;
+            let props = [
+                'name', 'surname','birthdate', 'nickname'
+                , 'resident', 'nationality', 'gender'
+            ];
+            props.forEach(function(prop){
+                let el = "input[name=personal-form-"+prop+"]"; 
+                if ($(el).val().length > 0) {
+                    data[prop] = $(el).val();
+                }
+            });
+            let url = project.buildUrl('user.editPersonalForm', data);
+            $.get(url, function(response) { 
+                if (response.success) { 
+                    authData = project.auth.getData(); 
+                    let updated_data = response.data.updated_data;
+                    Object.keys(updated_data).forEach(function(editedProp) { 
+                        authData.profile[editedProp] = updated_data[editedProp];
+                    }); 
+                    project.auth.setData(authData); 
+                    window.location.reload();  
+                }
+            })
+            .always(function() {
+                l.stop(); 
+            }); 
+        });
+        //--------------------------------------------
         $("#auth-data-form-submit").click(function(e){
             var l = Ladda.create(this);
 	 	    l.start();
-
             e.preventDefault();
-            // $("#submit-form-btn").attr("disabled", '1');
-            // $("#alert-process-is-on").show();
-            // register_email
+
             var data = {};
             let authData = project.auth.getData().account;
             data['uuid'] = authData.uuid;
@@ -376,7 +662,6 @@
             }
 
             let url = project.buildUrl('user.editAuthForm', data);
-
             $.get(url, function(response) { 
                 if (response.success) { 
                     authData = project.auth.getData(); 
@@ -385,30 +670,11 @@
                     }); 
                     project.auth.setData(authData); 
                     window.location.reload();  
-                } else {
-                    // // error
-                    // let message = "";
-                    // // message = message + "<br /><strong>" + response.message + '</strong>';
-                    // if (response.errors.length > 0) {
-                    //     // message = message + "<ul>";
-                    //     response.errors.forEach(function(errorMessage){
-                    //         message = message + "<br><strong>" + errorMessage + "</strong>";
-                    //     });
-                    //     // message = message + "</ul>";
-                    // }
-                    // showErrorAlert(message);
+                } else { 
                 }
-
-            })
-            .fail(function(response) {
-                // showErrorAlert('');
-                console.log("failed");
             })
             .always(function() {
-                console.log("always function fired");
                 l.stop(); 
-                // $("#alert-process-is-on").hide();
-                // $("#submit-form-btn").removeAttr("disabled");
             }); 
         });
         //--------------------------------------------
@@ -468,7 +734,32 @@
         }
         appendTrHtml = birthdateHtml.replace('%birthdate%', bDataStr);
         $("#profile-data-table tbody").append(appendTrHtml);
-        
+        //-------
+        let nicknameHtml = '<tr>' +
+                        '<td>Псевдоним</td>' + 
+                        '<td>%nickname%</td>' + 
+                        '<td></td>' + 
+                        '</tr>'; 
+        appendTrHtml = nicknameHtml.replace('%nickname%', profileData.nickname);
+        $("#profile-data-table tbody").append(appendTrHtml);
+        //-------
+        let nationalityHtml = '<tr>' +
+                        '<td>Национальность</td>' + 
+                        '<td>%nationality%</td>' + 
+                        '<td></td>' + 
+                        '</tr>'; 
+        appendTrHtml = nationalityHtml.replace('%nationality%', profileData.nationality);
+        $("#profile-data-table tbody").append(appendTrHtml);
+        //-------
+        let residentHtml = '<tr>' +
+                        '<td>Резидент</td>' + 
+                        '<td>%resident%</td>' + 
+                        '<td></td>' + 
+                        '</tr>'; 
+        appendTrHtml = residentHtml.replace('%resident%', profileData.resident);
+        $("#profile-data-table tbody").append(appendTrHtml);
+        //-------
+        //-------
         let genderHtml = '<tr>' +
                         '<td>Пол</td>' + 
                         '<td>%gender%</td>' + 
@@ -513,35 +804,44 @@
         //---
         htmlTemplate = '<tr>' +
                         '<td>Телефон</td>' + 
-                        '<td>%phone%</td>' + 
-                        '<td>%status%</td>' + 
+                        '<td>%phone% <br />%status% </td>' + 
+                        '<td>%button%</td>' + 
                         '</tr>';
         editedHtml = htmlTemplate.replace('%phone%', account.phone);
         let phoneAproved = "";
+        let confirmPhoneButton = "";
         if (account.phone.length > 0) {
-            phoneAproved = "<span class='text-danger'>Не подтвержден</span>";
+            // 
+            phoneAproved = "<small class='text-danger'>Не подтвержден</small>";
+            confirmPhoneButton ='<button class="btn btn-xs btn-primary"  data-toggle="modal" data-target="#confirmPhoneFormModal" >Подтвердить</button>';
             if (account.phone_status == 1) {
-                phoneAproved = "<span class='text-success'>Подтвержден</span>";
+                phoneAproved = "";
+                confirmPhoneButton = "<span class='text-success'>Подтвержден</span>";
             }
         }
         editedHtml = editedHtml.replace('%status%', phoneAproved);
+        editedHtml = editedHtml.replace('%button%', confirmPhoneButton);
         $("#account-data-table tbody").append(editedHtml);
         // -----
         htmlTemplate = '<tr>' +
                         '<td>Email</td>' + 
-                        '<td>%email%</td>' + 
-                        '<td>%status%</td>' + 
+                        '<td>%email% <br />%status%</td>' + 
+                        '<td>%button%</td>' + 
                         '</tr>';
         let emailText = (account.email) ? account.email : '<span class="text-muted" >не указан</span>' ;
+        let confirmEmailButton = "";
         editedHtml = htmlTemplate.replace('%email%', emailText);
         let emailAproved = "";
         if (account.email.length > 0) {
-            emailAproved = "<span class='text-danger'>Не подтвержден</span>";
+            emailAproved = "<small class='text-danger'>Не подтвержден</small>";
+            confirmEmailButton ='<button class="btn btn-xs btn-primary"  data-toggle="modal" data-target="#confirmEmailFormModal" >Подтвердить</button>';
             if (account.email_status == 1) {
-                emailAproved = "<span class='text-success'>Подтвержден</span>";
+                emailAproved = "";
+                confirmEmailButton = "<span class='text-success'>Подтвержден</span>";
             }
         }
         editedHtml = editedHtml.replace('%status%', emailAproved);
+        editedHtml = editedHtml.replace('%button%', confirmEmailButton);
         $("#account-data-table tbody").append(editedHtml);
         // -----
         htmlTemplate = '<tr>' +

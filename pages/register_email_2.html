@@ -43,7 +43,6 @@
                 <a class="btn btn-sm btn-white btn-block" href="index.html">Войти</a>
             </form>
 
-
             <br />
             <p>
                 <a href="pages/register_email_1.html">Перейти к запросу кода</a>
@@ -75,7 +74,6 @@
     <script src="js/plugins/iCheck/icheck.min.js"></script>
     <script> 
     $(document).ready(function(){
-
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green',
@@ -87,7 +85,6 @@
             $("input[name=email]").val(registerEmail);
         }
         //-------
-
         $("#submit-form-btn").click(function(e){
             e.preventDefault();
             $("#submit-form-btn").attr("disabled", '1');
@@ -96,9 +93,7 @@
             var data = {};
             data['email'] = $("input[name=email]").val();
             data['code'] = $("input[name=code]").val();
-
             let url = project.buildUrl('user.registerEmail_Step_2', data);
-
             $.get(url, function(response) {
                 if (response.success) {
                     // success 
@@ -128,7 +123,7 @@
                 $("#submit-form-btn").removeAttr("disabled");
             }); 
         });
-
+        //----
         function showErrorAlert(message) {
             $("#alert-process-failed").find('span').html(message);
             $("#alert-process-failed").show();
@@ -137,7 +132,7 @@
                 $("#alert-process-failed").find('span').html('');
             }, 5000);
         }
-        
+        //----
         function showSuccessAlert(message) {
             $("#alert-process-successed").find('span').html(message);
             $("#alert-process-successed").show();
