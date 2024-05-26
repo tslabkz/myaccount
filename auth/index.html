@@ -370,6 +370,44 @@
                                         </div>
                                     </div>
                                     <!-- modal end -->
+<!-- modal confirm ecp:start -->
+<div class="modal inmodal fade" id="confirmEcpFormModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Подтверждение ЭЦП</h4>
+                <p>Это всегл лишь имитация работы ЭЦП</p>
+            </div>
+            <div class="modal-body">
+                
+                <div class="form-group">
+                    <input type="text" placeholder="ИИН" class="form-control" name="ecp-confirm-iin" >
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" placeholder="ЭЦП пароль" class="form-control" name="ecp-confirm-iin_password" >
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
+                <button class="ladda-button  btn btn-outline btn-primary form-control" 
+                        id="ecp-confirm-submit"
+                        data-style="slide-left"
+                        >
+                    <span class="ladda-label">Подтвердить</span>
+                    <span class="ladda-spinner"></span>
+                    <div class="ladda-progress" style="width: 0px;"></div>
+                </button>
+                <!-- <button type="button" class="btn btn-primary" disabled>Подтвердить</button> -->
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal confirm ecp:end -->
+
 <!-- modal confirm phone:start -->
 <div class="modal inmodal fade" id="confirmPhoneFormModal" tabindex="-1" role="dialog"  aria-hidden="true">
     <div class="modal-dialog modal-sm">
@@ -500,6 +538,37 @@
     $(document).ready(function() {
 
         //--------------------------------------------
+        // подтверждение персональных спомощью эцп
+        $("#ecp-confirm-submit").click(function(e){
+            e.preventDefault();
+            var l = Ladda.create(this);
+            l.start();
+            let data = {};
+            data['uuid'] = project.auth.getData().account.uuid;
+            data['iin'] = $("input[name=ecp-confirm-iin]").val();
+            data['iin_password'] = $("input[name=ecp-confirm-iin_password]").val();
+            let url = project.buildUrl('user.confirmEcp', data);
+            $.get(url, function(response) { 
+                if (response.success) { 
+                    authData = project.auth.getData(); 
+                    Object.keys(response.data.account).forEach(function(editedProp) { 
+                        authData.account[editedProp] = response.data.account[editedProp]; 
+                    }); 
+                    Object.keys(response.data.profile).forEach(function(editedProp) { 
+                        authData.profile[editedProp] = response.data.profile[editedProp]; 
+                    }); 
+                    project.auth.setData(authData); 
+                    window.location.reload(); 
+                } else {
+                    // пока нет обработки ошибок
+                }
+            })
+            .fail(function(response) {
+            })
+            .always(function() {
+                l.stop(); 
+            }); 
+        });
         //--------------------------------------------
         // запрос кода
         $("#email-confirm-send-sms-submit").click(function(e){
@@ -798,6 +867,8 @@
         let iinStatusStr = "";
         if (account.iin_status) {    
             iinStatusStr = "Статус одобрения: " + account.iin_status;
+        } else {
+            iinStatusStr ='<button class="btn btn-xs btn-primary"  data-toggle="modal" data-target="#confirmEcpFormModal" >Подтвердить спомощью ЭЦП</button>';
         }
         editedHtml = editedHtml.replace('%status%', iinStatusStr);
         $("#account-data-table tbody").append(editedHtml);
